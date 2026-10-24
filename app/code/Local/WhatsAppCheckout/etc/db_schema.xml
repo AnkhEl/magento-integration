@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="local_whatsapp_link" resource="default" engine="innodb" comment="Verified WhatsApp Customer Links">
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column xsi:type="int" name="website_id" unsigned="true" nullable="false" comment="Website ID"/>
+        <column xsi:type="varchar" name="phone" length="20" nullable="false" comment="Verified E164 Phone"/>
+        <column xsi:type="timestamp" name="verified_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="false" comment="Verified At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY"><column name="customer_id"/></constraint>
+        <constraint xsi:type="unique" referenceId="LOCAL_WHATSAPP_LINK_WEBSITE_PHONE">
+            <column name="website_id"/><column name="phone"/>
+        </constraint>
+    </table>
+    <table name="local_whatsapp_challenge" resource="default" engine="innodb" comment="WhatsApp Link Challenges">
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column xsi:type="int" name="website_id" unsigned="true" nullable="false" comment="Website ID"/>
+        <column xsi:type="varchar" name="phone" length="20" nullable="false" comment="Requested E164 Phone"/>
+        <column xsi:type="varchar" name="code_hash" length="64" nullable="false" comment="Challenge Hash"/>
+        <column xsi:type="timestamp" name="expires_at" on_update="false" nullable="false" comment="Expires At"/>
+        <column xsi:type="smallint" name="attempts" unsigned="true" nullable="false" default="0" comment="Attempts"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY"><column name="customer_id"/></constraint>
+        <index referenceId="LOCAL_WHATSAPP_CHALLENGE_WEBSITE_PHONE" indexType="btree">
+            <column name="website_id"/><column name="phone"/>
+        </index>
+    </table>
+    <table name="local_whatsapp_conversation" resource="default" engine="innodb" comment="WhatsApp Order Drafts">
+        <column xsi:type="int" name="entity_id" unsigned="true" identity="true" nullable="false" comment="ID"/>
+        <column xsi:type="int" name="website_id" unsigned="true" nullable="false" comment="Website ID"/>
+        <column xsi:type="varchar" name="sender" length="32" nullable="false" comment="WhatsApp Business Sender"/>
+        <column xsi:type="varchar" name="phone" length="20" nullable="false" comment="Customer E164 Phone"/>
+        <column xsi:type="text" name="state_json" nullable="false" comment="Conversation State"/>
+        <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="false" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY"><column name="entity_id"/></constraint>
+        <constraint xsi:type="unique" referenceId="LOCAL_WHATSAPP_CONVERSATION_WEBSITE_SENDER_PHONE">
+            <column name="website_id"/><column name="sender"/><column name="phone"/>
+        </constraint>
+    </table>
+    <table name="local_whatsapp_message" resource="default" engine="innodb" comment="Processed Twilio Messages">
+        <column xsi:type="varchar" name="message_sid" length="34" nullable="false" comment="Twilio Message SID"/>
+        <column xsi:type="varchar" name="status" length="16" nullable="false" comment="Processing Status"/>
+        <column xsi:type="text" name="response_xml" nullable="true" comment="Twiml Response"/>
+        <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="false" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY"><column name="message_sid"/></constraint>
+    </table>
+</schema>

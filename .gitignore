@@ -1,0 +1,30 @@
+# Local credentials and environment settings
+/.env
+/.env.*
+!/.env.example
+!/.env.sample
+/auth.json
+/app/etc/env.php
+
+# Installed dependencies and generated Magento data
+/vendor/
+/generated/
+/var/
+/pub/static/*
+!/pub/static/.htaccess
+/pub/media/*
+!/pub/media/.htaccess
+/pub/opt/
+/pub/errors/local.xml
+
+# Local development tools and caches
+/node_modules/
+/.idea/
+/.vscode/
+/.agents/
+/.codex/
+/.aws/
+/.phpunit.result.cache
+/.php-cs-fixer.cache
+/coverage/
+/.DS_Store

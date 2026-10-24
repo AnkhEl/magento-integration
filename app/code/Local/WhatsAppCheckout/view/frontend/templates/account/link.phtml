@@ -1,0 +1,21 @@
+<?php /** @var \Local\WhatsAppCheckout\Block\Account\Link $block */ ?>
+<div class="block">
+    <div class="block-title"><strong><?= $escaper->escapeHtml(__('Link WhatsApp')) ?></strong></div>
+    <div class="block-content">
+        <?php if ($block->getLinkedPhone()): ?>
+            <p><?= $escaper->escapeHtml(__('Linked number: %1', $block->getLinkedPhone())) ?></p>
+        <?php endif; ?>
+        <p><?= $escaper->escapeHtml(__('Enter a number with country code. We will show a one-time code to send from that number in WhatsApp.')) ?></p>
+        <form action="<?= $escaper->escapeUrl($block->getUrl('whatsappcheckout/account/linkPost')) ?>" method="post">
+            <?= $block->getBlockHtml('formkey') ?>
+            <div class="field phone_number required">
+                <label class="label" for="link_phone_number"><span><?= $escaper->escapeHtml(__('WhatsApp number')) ?></span></label>
+                <div class="control">
+                    <input type="tel" id="link_phone_number" name="phone_number" class="input-text required-entry"
+                           value="<?= $escaper->escapeHtmlAttr($block->getRegisteredPhone()) ?>" required="required" placeholder="+27821234567" />
+                </div>
+            </div>
+            <div class="actions-toolbar"><button type="submit" class="action primary"><span><?= $escaper->escapeHtml(__('Create link code')) ?></span></button></div>
+        </form>
+    </div>
+</div>

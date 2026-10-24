@@ -1,0 +1,8 @@
+<div class="field phone_number required">
+    <label class="label" for="phone_number"><span><?= $escaper->escapeHtml(__('WhatsApp phone number')) ?></span></label>
+    <div class="control">
+        <input type="tel" name="phone_number" id="phone_number" class="input-text required-entry" required="required"
+               placeholder="+27821234567" autocomplete="tel" />
+        <div class="note"><?= $escaper->escapeHtml(__('Include your country code. Link this number from My Account before ordering in WhatsApp.')) ?></div>
+    </div>
+</div>

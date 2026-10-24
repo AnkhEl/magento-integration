@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="whatsappcheckout" translate="label" type="text" sortOrder="480" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>WhatsApp Checkout</label>
+            <tab>sales</tab>
+            <resource>Local_WhatsAppCheckout::config</resource>
+            <group id="twilio" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Twilio</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="account_sid" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Account SID</label>
+                </field>
+                <field id="auth_token" translate="label" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Auth Token</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="sender" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>WhatsApp Sender</label>
+                    <comment>Use the format whatsapp:+14155238886.</comment>
+                </field>
+                <field id="webhook_url" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Exact Public Webhook URL</label>
+                    <comment>Copy the complete HTTPS URL configured in Twilio, including any query string. This value is used to validate the Twilio signature.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

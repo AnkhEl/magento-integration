@@ -1,0 +1,7 @@
+services:
+  nginx:
+    image: docker.io/wardenenv/nginx:1.21
+  
+  varnish:
+    volumes:
+      - ./.warden/default.vcl.template:/etc/varnish/default.vcl.template:ro
