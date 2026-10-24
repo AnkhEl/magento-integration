@@ -3,8 +3,12 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
-                <resource id="Magento_Config::config">
-                    <resource id="Local_WhatsAppCheckout::config" title="WhatsApp Checkout" sortOrder="90"/>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Local_WhatsAppCheckout::config" title="WhatsApp Checkout" sortOrder="90"/>
+                        </resource>
+                    </resource>
                 </resource>
             </resource>
         </resources>
