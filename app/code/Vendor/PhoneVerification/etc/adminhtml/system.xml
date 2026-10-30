@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="phoneverification" translate="label" type="text" sortOrder="320"
+                 showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label>Phone Verification</label>
+            <tab>customer</tab>
+            <resource>Vendor_PhoneVerification::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable phone verification</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="whatsapp_sender" translate="label comment" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>WhatsApp sender number</label>
+                    <comment>The business number customers send the verification code to, in international format, digits only (e.g. 27821234567). Used to build the wa.me link.</comment>
+                </field>
+                <field id="default_country_code" translate="label comment" type="text" sortOrder="30"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Default country calling code</label>
+                    <comment>Applied when a customer enters a local number starting with 0 (e.g. 27 for South Africa).</comment>
+                    <validate>validate-digits required-entry</validate>
+                </field>
+                <field id="code_ttl_minutes" translate="label comment" type="text" sortOrder="40"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Code validity (minutes)</label>
+                    <validate>validate-digits validate-greater-than-zero required-entry</validate>
+                </field>
+                <field id="max_attempts" translate="label comment" type="text" sortOrder="50"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Maximum attempts per code</label>
+                    <comment>After this many attempts the code is invalidated and a new one must be requested.</comment>
+                    <validate>validate-digits validate-greater-than-zero required-entry</validate>
+                </field>
+                <field id="cooldown_seconds" translate="label comment" type="text" sortOrder="60"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cooldown between code requests (seconds)</label>
+                    <validate>validate-digits required-entry</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

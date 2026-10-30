@@ -1,0 +1,56 @@
+.phone-verification {
+    max-width: 520px;
+}
+
+.phone-verification [hidden] {
+    display: none !important;
+}
+
+.phone-verification__intro {
+    margin-bottom: 20px;
+}
+
+.phone-verification__message {
+    margin-bottom: 20px;
+}
+
+.phone-verification__panel {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #c2c2c2;
+    border-radius: 4px;
+    background: #f6f6f6;
+}
+
+.phone-verification__title {
+    margin-top: 0;
+}
+
+.phone-verification__code {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 4px;
+    background: #fff;
+    border: 2px dashed #25d366;
+    font-family: monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    user-select: all;
+}
+
+.phone-verification__hint {
+    color: #666;
+    font-size: 1.3rem;
+}
+
+.phone-verification__badge {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    background: #25d366;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Called by the middleware when a customer sends "VERIFY 123456" from WhatsApp -->
+    <route url="/V1/phone/verify" method="POST">
+        <service class="Vendor\PhoneVerification\Api\PhoneManagementInterface" method="verify"/>
+        <resources>
+            <resource ref="Vendor_PhoneVerification::verify"/>
+        </resources>
+    </route>
+    <!-- Called by the middleware to find out who a WhatsApp number belongs to -->
+    <route url="/V1/phone/lookup" method="GET">
+        <service class="Vendor\PhoneVerification\Api\PhoneManagementInterface" method="lookup"/>
+        <resources>
+            <resource ref="Vendor_PhoneVerification::lookup"/>
+        </resources>
+    </route>
+</routes>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <phoneverification>
+            <general>
+                <enabled>1</enabled>
+                <whatsapp_sender></whatsapp_sender>
+                <default_country_code>27</default_country_code>
+                <code_ttl_minutes>10</code_ttl_minutes>
+                <max_attempts>5</max_attempts>
+                <cooldown_seconds>30</cooldown_seconds>
+            </general>
+        </phoneverification>
+    </default>
+</config>

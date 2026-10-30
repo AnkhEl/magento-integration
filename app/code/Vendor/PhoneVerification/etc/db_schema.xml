@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <!-- Customer-level phone fields (general purpose: WhatsApp now, SMS / login later) -->
+    <table name="customer_entity">
+        <column xsi:type="varchar" name="phone_number" nullable="true" length="20"
+                comment="Customer phone number in E.164 format (e.g. +27821234567)"/>
+        <column xsi:type="smallint" name="phone_verified" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Phone ownership verified (0/1)"/>
+        <column xsi:type="varchar" name="phone_verified_at" nullable="true" length="19"
+                comment="UTC datetime (Y-m-d H:i:s) when the phone was verified"/>
+        <constraint xsi:type="unique" referenceId="CUSTOMER_ENTITY_PHONE_NUMBER">
+            <column name="phone_number"/>
+        </constraint>
+    </table>
+
+    <!-- One-time verification codes. Only an HMAC hash of the code is stored. -->
+    <table name="phone_verification" resource="default" engine="innodb"
+           comment="Phone verification codes">
+        <column xsi:type="int" name="verification_id" unsigned="true" nullable="false" identity="true"
+                padding="10" comment="Verification ID"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" identity="false"
+                padding="10" comment="Customer ID"/>
+        <column xsi:type="varchar" name="phone" nullable="false" length="20" comment="Phone in E.164 format"/>
+        <column xsi:type="varchar" name="code_hash" nullable="false" length="64" comment="HMAC-SHA256 of the code"/>
+        <column xsi:type="smallint" name="attempts" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Failed or used attempts"/>
+        <column xsi:type="datetime" name="created_at" nullable="false" comment="Created at (UTC)"/>
+        <column xsi:type="datetime" name="expires_at" nullable="false" comment="Expires at (UTC)"/>
+        <column xsi:type="datetime" name="consumed_at" nullable="true" comment="Consumed or invalidated at (UTC)"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="verification_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="PHONE_VERIFICATION_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID"
+                    table="phone_verification" column="customer_id"
+                    referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="PHONE_VERIFICATION_PHONE" indexType="btree">
+            <column name="phone"/>
+        </index>
+        <index referenceId="PHONE_VERIFICATION_CUSTOMER_ID_CREATED_AT" indexType="btree">
+            <column name="customer_id"/>
+            <column name="created_at"/>
+        </index>
+    </table>
+</schema>

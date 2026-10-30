@@ -1,0 +1,110 @@
+<?php
+/**
+ * My Account > Phone & WhatsApp
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Vendor\PhoneVerification\ViewModel\PhoneAccount $viewModel
+ */
+$viewModel = $block->getData('view_model');
+$status = $viewModel->getStatus();
+$phone = (string) ($status['phone'] ?? '');
+$verified = (bool) $status['verified'];
+?>
+<?php if (!$viewModel->isAvailable()): ?>
+    <div class="message info empty">
+        <div><?= $escaper->escapeHtml(__('Phone verification is not available right now.')) ?></div>
+    </div>
+<?php else: ?>
+<div id="phone-verification" class="phone-verification">
+
+    <p class="phone-verification__intro">
+        <?= $escaper->escapeHtml(__('Verify your phone number to order with us on WhatsApp. We will never share your number.')) ?>
+    </p>
+
+    <div class="phone-verification__message" data-role="message" role="alert" hidden></div>
+
+    <!-- Verified state -->
+    <div class="phone-verification__verified" data-role="verified" <?= $verified ? '' : 'hidden' ?>>
+        <p>
+            <strong data-role="verified-phone"><?= $escaper->escapeHtml($phone) ?></strong>
+            <span class="phone-verification__badge"><?= $escaper->escapeHtml(__('Verified')) ?></span>
+        </p>
+        <p><?= $escaper->escapeHtml(__('You can now message us on WhatsApp and send MENU to start shopping.')) ?></p>
+        <button type="button" class="action secondary" data-role="remove">
+            <span><?= $escaper->escapeHtml(__('Remove number')) ?></span>
+        </button>
+    </div>
+
+    <!-- Number entry form -->
+    <form class="form phone-verification__form" data-role="form" novalidate <?= $verified ? 'hidden' : '' ?>>
+        <fieldset class="fieldset">
+            <div class="field required">
+                <label class="label" for="phone-verification-number">
+                    <span><?= $escaper->escapeHtml(__('Mobile number')) ?></span>
+                </label>
+                <div class="control">
+                    <input type="tel"
+                           id="phone-verification-number"
+                           name="phone"
+                           class="input-text"
+                           autocomplete="tel"
+                           inputmode="tel"
+                           placeholder="<?= $escaper->escapeHtmlAttr(__('e.g. 082 123 4567')) ?>"
+                           value="<?= $escaper->escapeHtmlAttr($phone) ?>"
+                           maxlength="25"
+                           data-role="phone-input"/>
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="action primary" data-role="submit">
+                    <span><?= $escaper->escapeHtml(__('Send me a code')) ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Code panel: shown after a code was requested -->
+    <div class="phone-verification__panel" data-role="panel" hidden>
+        <h2 class="phone-verification__title"><?= $escaper->escapeHtml(__('Send this code on WhatsApp')) ?></h2>
+        <p><?= $escaper->escapeHtml(__('From the number you entered, send this exact message to our WhatsApp number:')) ?></p>
+        <p class="phone-verification__code" data-role="code"></p>
+        <p>
+            <a class="action primary" data-role="wa-link" href="#" target="_blank" rel="noopener noreferrer">
+                <span><?= $escaper->escapeHtml(__('Open WhatsApp')) ?></span>
+            </a>
+        </p>
+        <p class="phone-verification__hint">
+            <?= $escaper->escapeHtml(__('This code expires in')) ?>
+            <strong data-role="countdown"></strong>.
+            <?= $escaper->escapeHtml(__('This page updates automatically once we receive it.')) ?>
+        </p>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "#phone-verification": {
+        "Vendor_PhoneVerification/js/phone-verification": <?= /* @noEscape */ json_encode(
+            $viewModel->getWidgetConfig() + [
+                'initialState' => [
+                    'verified' => $verified,
+                    'pending' => (bool) $status['pending'],
+                    'expiresIn' => (int) $status['expires_in'],
+                ],
+                'messages' => [
+                    'expired' => (string) __('That code has expired. Please request a new one.'),
+                    'verified' => (string) __('Your number is verified.'),
+                    'error' => (string) __('Something went wrong. Please try again.'),
+                    'confirmRemove' => (string) __('Remove this number from your account?'),
+                    'pendingReload' => (string) __('You have a verification in progress. For security the code is not shown again, so please request a new one.'),
+                ],
+            ],
+            JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES
+        ) ?>
+    }
+}
+</script>
+<?php endif; ?>

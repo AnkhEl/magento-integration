@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <!-- Permissions to tick on the Magento Integration used by the middleware -->
+                <resource id="Vendor_PhoneVerification::phone_verification" title="Phone Verification" sortOrder="150">
+                    <resource id="Vendor_PhoneVerification::verify" title="Verify phone via messaging channel" sortOrder="10"/>
+                    <resource id="Vendor_PhoneVerification::lookup" title="Look up customer by phone" sortOrder="20"/>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Vendor_PhoneVerification::config" title="Phone Verification Section" sortOrder="320"/>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

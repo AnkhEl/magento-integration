@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Vendor\PhoneVerification\Api\PhoneManagementInterface"
+                type="Vendor\PhoneVerification\Model\PhoneManagement"/>
+    <preference for="Vendor\PhoneVerification\Api\Data\VerifyResultInterface"
+                type="Vendor\PhoneVerification\Model\Data\VerifyResult"/>
+    <preference for="Vendor\PhoneVerification\Api\Data\LookupResultInterface"
+                type="Vendor\PhoneVerification\Model\Data\LookupResult"/>
+</config>

@@ -1,0 +1,32 @@
+{
+    "customer_entity": {
+        "column": {
+            "phone_number": true,
+            "phone_verified": true,
+            "phone_verified_at": true
+        },
+        "constraint": {
+            "CUSTOMER_ENTITY_PHONE_NUMBER": true
+        }
+    },
+    "phone_verification": {
+        "column": {
+            "verification_id": true,
+            "customer_id": true,
+            "phone": true,
+            "code_hash": true,
+            "attempts": true,
+            "created_at": true,
+            "expires_at": true,
+            "consumed_at": true
+        },
+        "index": {
+            "PHONE_VERIFICATION_PHONE": true,
+            "PHONE_VERIFICATION_CUSTOMER_ID_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "PHONE_VERIFICATION_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+        }
+    }
+}
