@@ -8,6 +8,7 @@ use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Vendor\PhoneVerification\Model\PendingCodeStore;
 use Vendor\PhoneVerification\Model\VerificationService;
 
 /**
@@ -19,7 +20,8 @@ class Status extends AbstractAccount implements HttpGetActionInterface
         Context $context,
         private readonly Session $customerSession,
         private readonly JsonFactory $jsonFactory,
-        private readonly VerificationService $service
+        private readonly VerificationService $service,
+        private readonly PendingCodeStore $pendingCodeStore
     ) {
         parent::__construct($context);
     }
@@ -33,8 +35,19 @@ class Status extends AbstractAccount implements HttpGetActionInterface
             return $result->setHttpResponseCode(401)->setData(['success' => false]);
         }
 
-        return $result->setData(
-            ['success' => true] + $this->service->getStatus((int) $this->customerSession->getCustomerId())
-        );
+        $status = $this->service->getStatus((int) $this->customerSession->getCustomerId());
+
+        // Nothing left to wait for: forget the remembered code.
+        if ($status['verified'] || !$status['pending']) {
+            $this->pendingCodeStore->clear();
+        }
+
+        return $result->setData([
+            'success' => true,
+            'phone' => $status['phone'],
+            'verified' => $status['verified'],
+            'pending' => $status['pending'],
+            'expires_in' => $status['expires_in'],
+        ]);
     }
 }

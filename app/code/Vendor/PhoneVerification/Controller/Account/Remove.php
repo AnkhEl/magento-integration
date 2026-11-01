@@ -9,6 +9,7 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Psr\Log\LoggerInterface;
+use Vendor\PhoneVerification\Model\PendingCodeStore;
 use Vendor\PhoneVerification\Model\VerificationService;
 
 /**
@@ -21,6 +22,7 @@ class Remove extends AbstractAccount implements HttpPostActionInterface
         private readonly Session $customerSession,
         private readonly JsonFactory $jsonFactory,
         private readonly VerificationService $service,
+        private readonly PendingCodeStore $pendingCodeStore,
         private readonly LoggerInterface $logger
     ) {
         parent::__construct($context);
@@ -40,6 +42,7 @@ class Remove extends AbstractAccount implements HttpPostActionInterface
 
         try {
             $this->service->removePhone((int) $this->customerSession->getCustomerId());
+            $this->pendingCodeStore->clear();
 
             return $result->setData(['success' => true]);
         } catch (\Throwable $e) {

@@ -10,6 +10,9 @@ $viewModel = $block->getData('view_model');
 $status = $viewModel->getStatus();
 $phone = (string) ($status['phone'] ?? '');
 $verified = (bool) $status['verified'];
+// A code that is still valid and was remembered in this customer's session (shown again after a reload).
+$pending = $verified ? null : $viewModel->getPendingCode();
+$waiting = $pending !== null;
 ?>
 <?php if (!$viewModel->isAvailable()): ?>
     <div class="message info empty">
@@ -37,7 +40,7 @@ $verified = (bool) $status['verified'];
     </div>
 
     <!-- Number entry form -->
-    <form class="form phone-verification__form" data-role="form" novalidate <?= $verified ? 'hidden' : '' ?>>
+    <form class="form phone-verification__form" data-role="form" novalidate <?= ($verified || $waiting) ? 'hidden' : '' ?>>
         <fieldset class="fieldset">
             <div class="field required">
                 <label class="label" for="phone-verification-number">
@@ -66,13 +69,15 @@ $verified = (bool) $status['verified'];
         </div>
     </form>
 
-    <!-- Code panel: shown after a code was requested -->
-    <div class="phone-verification__panel" data-role="panel" hidden>
+    <!-- Code panel: shown after a code was requested, and again after a reload while the code is still valid -->
+    <div class="phone-verification__panel" data-role="panel" <?= $waiting ? '' : 'hidden' ?>>
         <h2 class="phone-verification__title"><?= $escaper->escapeHtml(__('Send this code on WhatsApp')) ?></h2>
         <p><?= $escaper->escapeHtml(__('From the number you entered, send this exact message to our WhatsApp number:')) ?></p>
-        <p class="phone-verification__code" data-role="code"></p>
+        <p class="phone-verification__code" data-role="code"><?= $waiting ? $escaper->escapeHtml('VERIFY ' . $pending['code']) : '' ?></p>
         <p>
-            <a class="action primary" data-role="wa-link" href="#" target="_blank" rel="noopener noreferrer">
+            <a class="action primary" data-role="wa-link"
+               href="<?= $waiting ? $escaper->escapeUrl($pending['waLink']) : '#' ?>"
+               target="_blank" rel="noopener noreferrer">
                 <span><?= $escaper->escapeHtml(__('Open WhatsApp')) ?></span>
             </a>
         </p>
@@ -80,6 +85,11 @@ $verified = (bool) $status['verified'];
             <?= $escaper->escapeHtml(__('This code expires in')) ?>
             <strong data-role="countdown"></strong>.
             <?= $escaper->escapeHtml(__('This page updates automatically once we receive it.')) ?>
+        </p>
+        <p class="phone-verification__hint">
+            <button type="button" class="action secondary" data-role="new-code">
+                <span><?= $escaper->escapeHtml(__('Use a different number or get a new code')) ?></span>
+            </button>
         </p>
     </div>
 </div>
@@ -92,14 +102,15 @@ $verified = (bool) $status['verified'];
                 'initialState' => [
                     'verified' => $verified,
                     'pending' => (bool) $status['pending'],
-                    'expiresIn' => (int) $status['expires_in'],
+                    // Seconds left on the code being shown again, or null when there is none to resume.
+                    'resumeSeconds' => $waiting ? (int) $pending['expiresIn'] : null,
                 ],
                 'messages' => [
                     'expired' => (string) __('That code has expired. Please request a new one.'),
                     'verified' => (string) __('Your number is verified.'),
                     'error' => (string) __('Something went wrong. Please try again.'),
                     'confirmRemove' => (string) __('Remove this number from your account?'),
-                    'pendingReload' => (string) __('You have a verification in progress. For security the code is not shown again, so please request a new one.'),
+                    'pendingReload' => (string) __('You have a verification in progress, but its code is no longer available in this session. Please request a new one.'),
                 ],
             ],
             JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES

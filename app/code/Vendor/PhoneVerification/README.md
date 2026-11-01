@@ -36,14 +36,22 @@ Stores > Configuration > Customers > **Phone Verification**
 - `customer_entity.phone_number` (E.164, unique), `phone_verified`, `phone_verified_at`
 - `phone_verification` table (stores only an HMAC hash of the code, bound to the phone number)
 - Admin: phone number and verified flag on the customer edit form
-- Storefront: `/phone/account/` page + sidebar link (AJAX request, live status polling, remove number)
+- Storefront: `/phone/account/` page + sidebar link (AJAX request, live status polling, remove number).
+  The plain code is kept only in the customer's server-side session (the database stores hashes only), so a page
+  reload shows the same code and countdown again while it is still valid. The page block is `cacheable="false"`
+  so full-page cache can never store a customer's number or code.
 - REST (Integration token): `POST /V1/phone/verify`, `GET /V1/phone/lookup`
 
 ## Middleware integration
 
+0. **Allow integration tokens as bearer tokens** (Magento 2.4.4+ blocks this by default; without it every call fails with
+   "The consumer isn't authorized to access Vendor_PhoneVerification::verify" even with a correct token):
+   Stores > Configuration > Services > OAuth > Consumer Settings > *Allow OAuth Access Tokens to be used as
+   standalone Bearer tokens* = Yes, or `bin/magento config:set oauth/consumer/enable_integration_as_bearer 1`
+   then `bin/magento cache:flush`.
 1. System > Extensions > Integrations > Add. On the **API** tab tick only
    *Phone Verification > Verify phone via messaging channel* and *Look up customer by phone*.
-   Activate and copy the **Access Token**.
+   Activate and copy the **Access Token** (not the Access Token Secret).
 2. Verify (called when the webhook receives `VERIFY 482913` from `27821234567`):
 
 ```bash

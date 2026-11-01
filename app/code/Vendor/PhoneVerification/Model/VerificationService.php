@@ -180,7 +180,7 @@ class VerificationService
     /**
      * State used by the My Account page and its polling endpoint.
      *
-     * @return array{phone: string|null, verified: bool, pending: bool, expires_in: int}
+     * @return array{phone: string|null, verified: bool, pending: bool, expires_in: int, expires_at: string|null}
      */
     public function getStatus(int $customerId): array
     {
@@ -197,6 +197,8 @@ class VerificationService
             'verified' => (int) ($customer['phone_verified'] ?? 0) === 1,
             'pending' => $pending !== null,
             'expires_in' => $expiresIn,
+            // Internal: lets the page check that a remembered code is still the current one.
+            'expires_at' => $pending['expires_at'] ?? null,
         ];
     }
 

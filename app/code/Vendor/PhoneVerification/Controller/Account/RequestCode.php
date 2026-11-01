@@ -10,6 +10,7 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
+use Vendor\PhoneVerification\Model\PendingCodeStore;
 use Vendor\PhoneVerification\Model\VerificationService;
 
 /**
@@ -23,6 +24,7 @@ class RequestCode extends AbstractAccount implements HttpPostActionInterface
         private readonly Session $customerSession,
         private readonly JsonFactory $jsonFactory,
         private readonly VerificationService $service,
+        private readonly PendingCodeStore $pendingCodeStore,
         private readonly LoggerInterface $logger
     ) {
         parent::__construct($context);
@@ -45,6 +47,9 @@ class RequestCode extends AbstractAccount implements HttpPostActionInterface
                 (int) $this->customerSession->getCustomerId(),
                 (string) $this->getRequest()->getParam('phone')
             );
+
+            // Remember the code in the session so a page reload can show it again.
+            $this->pendingCodeStore->save($data['code'], $data['wa_link'], $data['phone'], $data['expires_at']);
 
             return $result->setData(['success' => true] + $data);
         } catch (LocalizedException $e) {

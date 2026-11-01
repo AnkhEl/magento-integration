@@ -24,6 +24,7 @@ define([
             $verified = $root.find('[data-role="verified"]'),
             $verifiedPhone = $root.find('[data-role="verified-phone"]'),
             $remove = $root.find('[data-role="remove"]'),
+            $newCode = $root.find('[data-role="new-code"]'),
             msg = config.messages || {},
             pollTimer = null,
             countdownTimer = null,
@@ -174,10 +175,27 @@ define([
             });
         });
 
-        // Page reloaded while a code is still pending: the plain code is never stored, so it cannot be
-        // shown again. Tell the customer to request a fresh one (the old one is invalidated on request).
-        if (config.initialState && config.initialState.pending && !config.initialState.verified) {
-            showMessage(msg.pendingReload, false);
+        // Let the customer abandon the current code (wrong number, or they want a fresh one).
+        // Requesting again invalidates the old code on the server.
+        $newCode.on('click', function () {
+            stopTimers();
+            clearMessage();
+            $panel.prop('hidden', true);
+            $form.prop('hidden', false);
+            $input.trigger('focus');
+        });
+
+        // Page loaded while a verification is in progress.
+        var initial = config.initialState || {};
+
+        if (!initial.verified && initial.pending) {
+            if (initial.resumeSeconds !== null && initial.resumeSeconds !== undefined) {
+                // The server already rendered the code panel from the customer's session: just resume the countdown.
+                startWaiting(initial.resumeSeconds);
+            } else {
+                // A code is pending but not available in this session (for example it was requested on another device).
+                showMessage(msg.pendingReload, false);
+            }
         }
     };
 });
