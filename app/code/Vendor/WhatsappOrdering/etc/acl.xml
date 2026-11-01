@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <!-- Permissions to tick on the Magento Integration used by the middleware -->
+                <resource id="Vendor_WhatsappOrdering::ordering" title="WhatsApp Ordering" sortOrder="160">
+                    <resource id="Vendor_WhatsappOrdering::catalog_read" title="Look up products by SKU" sortOrder="10"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

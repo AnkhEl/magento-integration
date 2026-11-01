@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Called by the middleware to check the SKUs a customer typed (POST because the list goes in the body) -->
+    <route url="/V1/whatsapp/products/lookup" method="POST">
+        <service class="Vendor\WhatsappOrdering\Api\ProductLookupInterface" method="lookup"/>
+        <resources>
+            <resource ref="Vendor_WhatsappOrdering::catalog_read"/>
+        </resources>
+    </route>
+</routes>
