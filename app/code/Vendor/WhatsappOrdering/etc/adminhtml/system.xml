@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="whatsapp_ordering" translate="label" type="text" sortOrder="330"
+                 showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label>WhatsApp Ordering</label>
+            <tab>sales</tab>
+            <resource>Vendor_WhatsappOrdering::config</resource>
+            <group id="checkout" translate="label" type="text" sortOrder="10"
+                   showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Checkout from WhatsApp</label>
+                <field id="shipping_method" translate="label comment" type="text" sortOrder="10"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Shipping method code</label>
+                    <comment>The one shipping method used for every WhatsApp order, as carrier_method (for example flatrate_flatrate or tablerate_bestway). The order preview lists the codes available for a customer's address.</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="payment_method" translate="label comment" type="text" sortOrder="20"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Payment method code</label>
+                    <comment>Cash on delivery is cashondelivery. The method must be enabled under Stores > Configuration > Sales > Payment Methods.</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="max_order_value" translate="label comment" type="text" sortOrder="30"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Maximum order value</label>
+                    <comment>Largest grand total (in the store's base currency) accepted from WhatsApp. 0 means no limit.</comment>
+                    <validate>validate-number validate-zero-or-greater required-entry</validate>
+                </field>
+                <field id="max_items" translate="label comment" type="text" sortOrder="40"
+                       showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Maximum items per order</label>
+                    <comment>Largest total quantity accepted from WhatsApp. 0 means no limit.</comment>
+                    <validate>validate-digits required-entry</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

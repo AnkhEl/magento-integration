@@ -4,7 +4,12 @@
     <module name="Vendor_WhatsappOrdering">
         <sequence>
             <module name="Magento_Catalog"/>
+            <module name="Magento_Customer"/>
+            <module name="Magento_Quote"/>
+            <module name="Magento_Payment"/>
+            <module name="Magento_Shipping"/>
             <module name="Magento_InventorySalesApi"/>
+            <module name="Vendor_PhoneVerification"/>
         </sequence>
     </module>
 </config>

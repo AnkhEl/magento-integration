@@ -8,4 +8,11 @@
             <resource ref="Vendor_WhatsappOrdering::catalog_read"/>
         </resources>
     </route>
+    <!-- Called by the middleware before checkout: delivery address, shipping, totals. Creates nothing. -->
+    <route url="/V1/whatsapp/orders/preview" method="POST">
+        <service class="Vendor\WhatsappOrdering\Api\OrderPreviewManagementInterface" method="preview"/>
+        <resources>
+            <resource ref="Vendor_WhatsappOrdering::order_preview"/>
+        </resources>
+    </route>
 </routes>

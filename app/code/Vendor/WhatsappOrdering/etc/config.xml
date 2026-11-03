@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <whatsapp_ordering>
+            <checkout>
+                <shipping_method>flatrate_flatrate</shipping_method>
+                <payment_method>cashondelivery</payment_method>
+                <max_order_value>5000</max_order_value>
+                <max_items>50</max_items>
+            </checkout>
+        </whatsapp_ordering>
+    </default>
+</config>

@@ -5,4 +5,14 @@
                 type="Vendor\WhatsappOrdering\Model\ProductLookup"/>
     <preference for="Vendor\WhatsappOrdering\Api\Data\ProductInfoInterface"
                 type="Vendor\WhatsappOrdering\Model\Data\ProductInfo"/>
+    <preference for="Vendor\WhatsappOrdering\Api\OrderPreviewManagementInterface"
+                type="Vendor\WhatsappOrdering\Model\OrderPreviewManagement"/>
+    <preference for="Vendor\WhatsappOrdering\Api\Data\OrderItemInterface"
+                type="Vendor\WhatsappOrdering\Model\Data\OrderItem"/>
+    <preference for="Vendor\WhatsappOrdering\Api\Data\OrderPreviewInterface"
+                type="Vendor\WhatsappOrdering\Model\Data\OrderPreview"/>
+    <preference for="Vendor\WhatsappOrdering\Api\Data\PreviewLineInterface"
+                type="Vendor\WhatsappOrdering\Model\Data\PreviewLine"/>
+    <preference for="Vendor\WhatsappOrdering\Api\Data\ShippingOptionInterface"
+                type="Vendor\WhatsappOrdering\Model\Data\ShippingOption"/>
 </config>
