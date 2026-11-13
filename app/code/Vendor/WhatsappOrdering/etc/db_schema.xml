@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!-- One row per order attempt from WhatsApp; the unique key is what stops a retried message ordering twice. -->
+    <table name="vendor_whatsapp_order" resource="default" engine="innodb"
+           comment="WhatsApp order attempts (idempotency)">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Id"/>
+        <column xsi:type="varchar" name="idempotency_key" nullable="false" length="64" comment="Key sent by the bot"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" comment="Customer who confirmed"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="16" default="pending"
+                comment="pending or placed"/>
+        <column xsi:type="int" name="order_id" unsigned="true" nullable="true" comment="Order, once placed"/>
+        <column xsi:type="varchar" name="increment_id" nullable="true" length="32" comment="Order number"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="VENDOR_WHATSAPP_ORDER_IDEMPOTENCY_KEY">
+            <column name="idempotency_key"/>
+        </constraint>
+    </table>
+</schema>

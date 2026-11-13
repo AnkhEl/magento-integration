@@ -15,4 +15,8 @@
                 type="Vendor\WhatsappOrdering\Model\Data\PreviewLine"/>
     <preference for="Vendor\WhatsappOrdering\Api\Data\ShippingOptionInterface"
                 type="Vendor\WhatsappOrdering\Model\Data\ShippingOption"/>
+    <preference for="Vendor\WhatsappOrdering\Api\OrderPlacementInterface"
+                type="Vendor\WhatsappOrdering\Model\OrderPlacement"/>
+    <preference for="Vendor\WhatsappOrdering\Api\Data\PlacedOrderInterface"
+                type="Vendor\WhatsappOrdering\Model\Data\PlacedOrder"/>
 </config>

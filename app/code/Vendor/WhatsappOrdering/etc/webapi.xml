@@ -15,4 +15,11 @@
             <resource ref="Vendor_WhatsappOrdering::order_preview"/>
         </resources>
     </route>
+    <!-- Places the confirmed cash-on-delivery order. Safe to retry with the same idempotency key. -->
+    <route url="/V1/whatsapp/orders" method="POST">
+        <service class="Vendor\WhatsappOrdering\Api\OrderPlacementInterface" method="place"/>
+        <resources>
+            <resource ref="Vendor_WhatsappOrdering::order_place"/>
+        </resources>
+    </route>
 </routes>

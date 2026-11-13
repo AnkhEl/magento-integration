@@ -8,6 +8,7 @@
                 <resource id="Vendor_WhatsappOrdering::ordering" title="WhatsApp Ordering" sortOrder="160">
                     <resource id="Vendor_WhatsappOrdering::catalog_read" title="Look up products by SKU" sortOrder="10"/>
                     <resource id="Vendor_WhatsappOrdering::order_preview" title="Preview an order (address, shipping, totals)" sortOrder="20"/>
+                    <resource id="Vendor_WhatsappOrdering::order_place" title="Place an order" sortOrder="30"/>
                 </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
